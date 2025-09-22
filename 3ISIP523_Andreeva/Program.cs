@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,6 +10,8 @@ namespace _3ISIP523_Andreeva
     {
         static void Main(string[] args)
         {
+            // Устанавливаем культуру для рублей
+            System.Globalization.CultureInfo.CurrentCulture = new System.Globalization.CultureInfo("ru-RU");
             
             Console.WriteLine("=== Учет ежедневных расходов ===");
 
@@ -97,19 +99,20 @@ namespace _3ISIP523_Andreeva
             Console.Write("Выберите пункт: ");
         }
 
-        // 1. 
+        // 1. Вывод данных
         static void ShowData(string[] names, decimal[] amounts)
         {
             Console.WriteLine("\n=== ВСЕ РАСХОДЫ ===");
             decimal total = 0;
             for (int i = 0; i < names.Length; i++)
             {
-                Console.WriteLine($"{i + 1}. {names[i]} - {amounts[i]:C}");
+                Console.WriteLine($"{i + 1}. {names[i]} - {amounts[i]:F2} руб.");
                 total += amounts[i];
             }
-            Console.WriteLine($"Общая сумма: {total:C}");
+            Console.WriteLine($"Общая сумма: {total:F2} руб.");
         }
-        // 2. 
+
+        // 2. Статистика
         static void ShowStatistics(decimal[] amounts)
         {
             if (amounts.Length == 0) return;
@@ -128,14 +131,14 @@ namespace _3ISIP523_Andreeva
             decimal average = sum / amounts.Length;
 
             Console.WriteLine("\n=== СТАТИСТИКА ===");
-            Console.WriteLine($"Сумма: {sum:C}");
-            Console.WriteLine($"Среднее: {average:C}");
-            Console.WriteLine($"Максимум: {max:C}");
-            Console.WriteLine($"Минимум: {min:C}");
+            Console.WriteLine($"Сумма: {sum:F2} руб.");
+            Console.WriteLine($"Среднее: {average:F2} руб.");
+            Console.WriteLine($"Максимум: {max:F2} руб.");
+            Console.WriteLine($"Минимум: {min:F2} руб.");
             Console.WriteLine($"Количество операций: {amounts.Length}");
         }
 
-        // 3. 
+        // 3. Пузырьковая сортировка
         static void BubbleSort(string[] names, decimal[] amounts)
         {
             int n = amounts.Length;
@@ -157,7 +160,7 @@ namespace _3ISIP523_Andreeva
             }
         }
 
-        // 4. 
+        // 4. Конвертация валюты
         static void ConvertCurrency(decimal[] amounts)
         {
             Console.WriteLine("\n=== КОНВЕРТАЦИЯ ВАЛЮТЫ ===");
@@ -200,17 +203,20 @@ namespace _3ISIP523_Andreeva
             }
 
             Console.WriteLine($"\n=== РАСХОДЫ В {currencyName} ===");
-            decimal total = 0;
+            decimal totalRub = 0;
+            decimal totalConverted = 0;
             for (int i = 0; i < amounts.Length; i++)
             {
                 decimal converted = amounts[i] / rate;
-                Console.WriteLine($"{i + 1}. {amounts[i]:C} руб. = {converted:F2} {currencyName}");
-                total += converted;
+                Console.WriteLine($"{i + 1}. {amounts[i]:F2} руб. = {converted:F2} {currencyName}");
+                totalRub += amounts[i];
+                totalConverted += converted;
             }
-            Console.WriteLine($"Общая сумма: {total:F2} {currencyName}");
+            Console.WriteLine($"Общая сумма в рублях: {totalRub:F2} руб.");
+            Console.WriteLine($"Общая сумма в {currencyName}: {totalConverted:F2} {currencyName}");
         }
 
-        // 5. 
+        // 5. Поиск по названию
         static void SearchByName(string[] names, decimal[] amounts)
         {
             Console.Write("\nВведите название для поиска: ");
@@ -223,7 +229,7 @@ namespace _3ISIP523_Andreeva
             {
                 if (names[i].ToLower().Contains(searchTerm))
                 {
-                    Console.WriteLine($"{names[i]} - {amounts[i]:C}");
+                    Console.WriteLine($"{names[i]} - {amounts[i]:F2} руб.");
                     found = true;
                 }
             }
